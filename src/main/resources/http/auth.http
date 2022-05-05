@@ -1,0 +1,18 @@
+POST http://localhost:8080/auth/login
+Content-Type:  application/json
+
+{
+  "email": "1231adssd@gmail.com",
+  "password": "valsdish7"
+}
+
+###
+POST http://localhost:8080/auth/registration
+Content-Type:  application/json
+
+{
+  "name": "Alissdh1",
+  "surname": "Asdliyev1",
+  "email": "1231adssd@gmail.com",
+  "password": "valsdish7"
+}

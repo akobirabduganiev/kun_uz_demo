@@ -1,0 +1,22 @@
+POST http://localhost:8080/region/adm
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjUwNTE5MjY2LCJleHAiOjE2NTA1MjI4NjYsImlzcyI6Im1hemdpIHByb2R1Y3Rpb24iLCJyb2xlIjoiQURNSU4ifQ.O12xnTCfVPVaguURkTow9R9ZbNI6KG2pFi6XlgOJLmY
+
+{
+  "nameUz": "Buxoro",
+  "nameRu": "Букхара",
+  "nameEn": "Bukhara",
+  "key": "Bukhara"
+}
+
+###
+POST http://localhost:8080/region/adm
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjUwNTE5MjY2LCJleHAiOjE2NTA1MjI4NjYsImlzcyI6Im1hemdpIHByb2R1Y3Rpb24iLCJyb2xlIjoiQURNSU4ifQ.O12xnTCfVPVaguURkTow9R9ZbNI6KG2pFi6XlgOJLmY
+
+{
+  "nameUz": "Toshkent",
+  "nameRu": "Ташкент",
+  "nameEn": "Tashkent",
+  "key": "Tashkent"
+}
