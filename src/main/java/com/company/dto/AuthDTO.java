@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Getter
 public class AuthDTO {
-    @NotNull
+    @NotNull(message = "Email required! ")
     private String email;
-    @NotNull
+    @NotNull(message = "Password Required!")
     private String password;
 }
