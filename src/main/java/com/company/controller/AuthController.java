@@ -27,6 +27,7 @@ public class AuthController {
 
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@RequestBody RegistrationDTO dto) {
+        log.info("registration : {}", dto);
         authService.registration(dto);
         return ResponseEntity.ok().build();
     }

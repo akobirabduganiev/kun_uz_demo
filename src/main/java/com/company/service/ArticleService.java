@@ -11,6 +11,7 @@ import com.company.exceptions.ItemNotFoundException;
 import com.company.mapper.ArticleSimpleMapper;
 import com.company.repository.ArticleRepository;
 import com.company.validation.ArticleValidation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ArticleService {
     @Value("${server.domain.name}")
     private String domainName;
@@ -48,6 +50,7 @@ public class ArticleService {
     public ArticleDTO create(ArticleDTO dto, Integer pId) {
         Optional<ArticleEntity> optional = articleRepository.findByTitle(dto.getTitle());
         if (optional.isPresent()) {
+            log.warn("Article Already exists : {}", dto);
             throw new ItemAlreadyExistsException("This Article already used!");
         }
 
@@ -88,6 +91,7 @@ public class ArticleService {
                 .orElseThrow(() -> new ItemNotFoundException("Not Found!"));
 
         if (!entity.getVisible()) {
+            log.warn("Id not found : {}", id);
             throw new ItemNotFoundException("Not Found!");
         }
 
@@ -106,6 +110,7 @@ public class ArticleService {
                 .orElseThrow(() -> new ItemNotFoundException("Not Found!"));
 
         if (!entity.getVisible()) {
+            log.warn("id not found : {}", id);
             throw new ItemNotFoundException("Not Found!");
         }
 
@@ -138,6 +143,7 @@ public class ArticleService {
     public ArticleDTO getByIdPublished(Integer articleId, LangEnum lang) {
         Optional<ArticleEntity> optional = articleRepository.findByIdAndStatus(articleId, ArticleStatus.PUBLISHED);
         if (optional.isEmpty()) {
+            log.warn("Article not found : {}", articleId);
             throw new ItemNotFoundException("Item not found");
         }
         return toDetailDTO(optional.get(), lang);
@@ -146,6 +152,7 @@ public class ArticleService {
     public ArticleDTO getByIdAdAdmin(Integer articleId, LangEnum lang) {
         Optional<ArticleEntity> optional = articleRepository.findById(articleId);
         if (optional.isEmpty()) {
+            log.warn("Article not found : {}", articleId);
             throw new ItemNotFoundException("Item not found");
         }
 
@@ -299,6 +306,7 @@ public class ArticleService {
 
     public ArticleEntity get(Integer articleId) {
         return articleRepository.findById(articleId).orElseThrow(() -> {
+            log.warn("Article not found : {}", articleId);
             throw new ItemNotFoundException("Article Not found");
         });
     }

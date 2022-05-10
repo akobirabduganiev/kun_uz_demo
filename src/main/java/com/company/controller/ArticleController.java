@@ -6,6 +6,7 @@ import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.ArticleService;
 import com.company.util.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/article")
+@Slf4j
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
@@ -105,6 +107,7 @@ public class ArticleController {
                                     @RequestBody @Valid ArticleDTO dto,
                                     HttpServletRequest request) {
         Integer pId = JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN);
+        log.info("updated : {}", dto);
         return ResponseEntity.ok(articleService.update(id, dto, pId));
     }
 
@@ -113,6 +116,7 @@ public class ArticleController {
                                           @RequestParam ArticleStatus status,
                                           HttpServletRequest request) {
         Integer pId = JwtUtil.getIdFromHeader(request, ProfileRole.PUBLISHER, ProfileRole.MODERATOR);
+        log.info("status changed : {}", status);
         return ResponseEntity.ok(articleService.changeStatus(aId, status));
     }
 
@@ -125,6 +129,7 @@ public class ArticleController {
     @DeleteMapping("/adm/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id, HttpServletRequest request) {
         JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN);
+        log.info("article deleted : {}", id);
         return ResponseEntity.ok(articleService.delete(id));
     }
 }

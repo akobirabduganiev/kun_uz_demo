@@ -4,6 +4,7 @@ import com.company.dto.AttachDTO;
 import com.company.enums.ProfileRole;
 import com.company.service.AttachService;
 import com.company.util.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@Slf4j
 @RequestMapping("/attach")
 public class AttachController {
     @Autowired
@@ -21,6 +23,7 @@ public class AttachController {
 
     @PostMapping("/upload")
     public ResponseEntity<AttachDTO> create(@RequestParam("file") MultipartFile file) {
+        log.info("file created : {}", file);
         return ResponseEntity.ok(attachService.upload(file));
     }
 

@@ -10,6 +10,7 @@ import com.company.exceptions.AppForbiddenException;
 import com.company.exceptions.RegionAlreadyExistsException;
 import com.company.repository.ArticleTypeRepository;
 import com.company.validation.ArticleTypeValidation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ArticleTypeService {
     @Autowired
     private ProfileService profileService;
@@ -28,12 +30,14 @@ public class ArticleTypeService {
     public ArticleTypeDTO create(ArticleTypeDTO dto, Integer pId) {
         ProfileEntity profile = profileService.get(pId);
         if (!profile.getRole().equals(ProfileRole.ADMIN)) {
+            log.warn("Not Access {}", profile);
             throw new AppForbiddenException("Not access");
         }
         ArticleTypeValidation.isValid(dto);
         ArticleTypeEntity article = articleRepository.findByKey(dto.getKey());
         if (article != null) {
-            throw new RegionAlreadyExistsException("Region Alredy Exists");
+            log.warn("article not found : {}", article);
+            throw new RegionAlreadyExistsException("Region Already Exists");
         }
         ArticleTypeEntity entity = new ArticleTypeEntity();
         entity.setNameUz(dto.getNameUz());
@@ -56,12 +60,13 @@ public class ArticleTypeService {
         List<ArticleTypeEntity> profileEntityList = pagination.getContent();
         long totalElement = pagination.getTotalElements();
         List<ArticleTypeDTO> dtoList = profileEntityList.stream().map(this::toDTO).toList();
-        return new PageImpl<ArticleTypeDTO>(dtoList, pageable, totalElement);
+        return new PageImpl<>(dtoList, pageable, totalElement);
     }
 
     public ArticleTypeDTO getById(Integer id) {
         Optional<ArticleTypeEntity> optional = articleRepository.findById(id);
         if (optional.isEmpty()) {
+            log.warn("id not found : {}", id);
             throw new AppBadRequestException("Id Not Found");
         }
         ArticleTypeEntity article = optional.get();
@@ -71,6 +76,7 @@ public class ArticleTypeService {
     public ArticleTypeDTO getById(Integer id, LangEnum lang) {
         Optional<ArticleTypeEntity> optional = articleRepository.findById(id);
         if (optional.isEmpty()) {
+            log.warn("id not found : {}", id);
             throw new AppBadRequestException("Id Not Found");
         }
         ArticleTypeEntity article = optional.get();
@@ -80,16 +86,19 @@ public class ArticleTypeService {
     public String update(Integer id, ArticleTypeDTO dto) {
         ProfileEntity profile = profileService.get(dto.getProfileId());
         if (!profile.getRole().equals(ProfileRole.ADMIN)) {
+            log.warn("Not Access : {}", profile);
             throw new AppForbiddenException("Not access");
         }
         Optional<ArticleTypeEntity> optional = articleRepository.findById(id);
         if (optional.isEmpty()) {
+            log.warn("id not found : {}", id);
             throw new AppBadRequestException("Id Not Found");
         }
         ArticleTypeValidation.isValid(dto);
         ArticleTypeEntity entity = articleRepository.findByKey(dto.getNameUz());
         if (entity != null) {
-            throw new RegionAlreadyExistsException("Region alredy exists");
+            log.warn("Region already exists : {}", entity);
+            throw new RegionAlreadyExistsException("Region already exists");
         }
         ArticleTypeEntity article = optional.get();
         article.setNameUz(dto.getNameUz());
@@ -105,6 +114,7 @@ public class ArticleTypeService {
 
         Optional<ArticleTypeEntity> optional = articleRepository.findById(id);
         if (optional.isEmpty()) {
+            log.warn("id not found : {}", id );
             throw new AppBadRequestException("Id Not Found");
         }
         ArticleTypeEntity entity = optional.get();
