@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/article")
@@ -93,7 +94,7 @@ public class ArticleController {
      */
 
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody ArticleDTO dto, HttpServletRequest request) {
+    public ResponseEntity<?> create(@RequestBody @Valid ArticleDTO dto, HttpServletRequest request) {
         Integer pId = JwtUtil.getIdFromHeader(request, ProfileRole.MODERATOR);
         return ResponseEntity.ok(articleService.create(dto, pId));
     }
@@ -101,7 +102,7 @@ public class ArticleController {
 
     @PutMapping("/adm/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                    @RequestBody ArticleDTO dto,
+                                    @RequestBody @Valid ArticleDTO dto,
                                     HttpServletRequest request) {
         Integer pId = JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN);
         return ResponseEntity.ok(articleService.update(id, dto, pId));

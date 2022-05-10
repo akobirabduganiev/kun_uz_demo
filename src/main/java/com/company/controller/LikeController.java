@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/like")
@@ -19,7 +20,7 @@ public class LikeController {
     private LikeService likeService;
 
     @PostMapping("/profile")
-    public ResponseEntity<?> create(@RequestBody LikeDTO dto,
+    public ResponseEntity<?> create(@RequestBody @Valid LikeDTO dto,
                                     HttpServletRequest request) {
         Integer pId = JwtUtil.getIdFromHeader(request);
         return ResponseEntity.ok(likeService.create(dto, pId));

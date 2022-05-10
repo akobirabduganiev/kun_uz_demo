@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/profile")
@@ -19,7 +20,7 @@ public class ProfileController {
     private ProfileService profileService;
 
     @PostMapping("/adm")
-    public ResponseEntity<?> createProfile(@RequestBody ProfileDTO dto) {
+    public ResponseEntity<?> createProfile(@RequestBody @Valid ProfileDTO dto) {
         return ResponseEntity.ok(profileService.create(dto));
     }
 
@@ -35,7 +36,7 @@ public class ProfileController {
     }
 
     @PutMapping("/adm/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable("id") Integer id, @RequestBody ProfileDTO dto) {
+    public ResponseEntity<?> updateStudent(@PathVariable("id") Integer id, @RequestBody @Valid ProfileDTO dto) {
         return ResponseEntity.ok(profileService.update(id, dto));
     }
 

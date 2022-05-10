@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/comment")
@@ -21,7 +22,7 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody CommentDTO dto,
+    public ResponseEntity<?> create(@RequestBody @Valid CommentDTO dto,
                                     HttpServletRequest request) {
         Integer pId = JwtUtil.getIdFromHeader(request);
         return ResponseEntity.ok(commentService.create(dto, pId));
@@ -29,7 +30,7 @@ public class CommentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Integer commentId,
-                                    @RequestBody CommentDTO dto,
+                                    @RequestBody @Valid CommentDTO dto,
                                     HttpServletRequest request) {
         Integer pId = JwtUtil.getIdFromHeader(request);
         return ResponseEntity.ok(commentService.update(commentId, dto, pId));

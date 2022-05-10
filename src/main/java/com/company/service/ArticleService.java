@@ -46,8 +46,6 @@ public class ArticleService {
 
 
     public ArticleDTO create(ArticleDTO dto, Integer pId) {
-        ArticleValidation.isValid(dto); // validation
-
         Optional<ArticleEntity> optional = articleRepository.findByTitle(dto.getTitle());
         if (optional.isPresent()) {
             throw new ItemAlreadyExistsException("This Article already used!");
@@ -76,9 +74,7 @@ public class ArticleService {
 
         List<ArticleDTO> dtoList = new ArrayList<>();
 
-        articleRepository.findByVisible(true, pageable).forEach(entity -> {
-            dtoList.add(toDTO(entity));
-        });
+        articleRepository.findByVisible(true, pageable).forEach(entity -> dtoList.add(toDTO(entity)));
 
         return dtoList;
     }
@@ -98,7 +94,6 @@ public class ArticleService {
         entity.setTitle(dto.getTitle());
         entity.setDescription(dto.getDescription());
         entity.setContent(dto.getContent());
-        ;
         entity.setProfile(profileEntity);
         entity.setUpdatedDate(LocalDateTime.now());
 
@@ -163,9 +158,9 @@ public class ArticleService {
         List<ArticleDTO> dtoList = new ArrayList<>();
 
         Page<ArticleEntity> entityPage = articleRepository.findByRegionIdAndStatus(regionId, pageable, ArticleStatus.PUBLISHED);
-        entityPage.stream().forEach(entity -> {
-            dtoList.add(toSimpleDTO(entity));
-        });
+        entityPage.stream().forEach(entity ->
+                dtoList.add(toSimpleDTO(entity))
+        );
 
         return new PageImpl<>(dtoList, pageable, entityPage.getTotalElements());
 
@@ -177,9 +172,7 @@ public class ArticleService {
         List<ArticleDTO> dtoList = new ArrayList<>();
 
         Page<ArticleEntity> entityPage = articleRepository.findByCategoryIdAndStatus(cId, pageable, ArticleStatus.PUBLISHED);
-        entityPage.stream().forEach(entity -> {
-            dtoList.add(toSimpleDTO(entity));
-        });
+        entityPage.stream().forEach(entity -> dtoList.add(toSimpleDTO(entity)));
 
         return new PageImpl<>(dtoList, pageable, entityPage.getTotalElements());
     }
@@ -190,9 +183,7 @@ public class ArticleService {
         List<ArticleDTO> dtoList = new ArrayList<>();
 
         Page<ArticleEntity> entityPage = articleRepository.findByTypeIdAndStatus(tId, pageable, ArticleStatus.PUBLISHED);
-        entityPage.stream().forEach(entity -> {
-            dtoList.add(toSimpleDTO(entity));
-        });
+        entityPage.stream().forEach(entity -> dtoList.add(toSimpleDTO(entity)));
 
         return new PageImpl<>(dtoList, pageable, entityPage.getTotalElements());
     }
@@ -201,9 +192,7 @@ public class ArticleService {
         List<ArticleDTO> dtoList = new ArrayList<>();
 
         List<ArticleSimpleMapper> entityPage = articleRepository.getLast4(ArticleStatus.PUBLISHED.name());
-        entityPage.forEach(entity -> {
-            dtoList.add(toSimpleDTO(entity));
-        });
+        entityPage.forEach(entity -> dtoList.add(toSimpleDTO(entity)));
 
         return dtoList;
     }
@@ -214,9 +203,7 @@ public class ArticleService {
         List<ArticleDTO> dtoList = new ArrayList<>();
 
         List<ArticleSimpleMapper> entityPage = articleRepository.getByRegionIdLast4(rId, ArticleStatus.PUBLISHED.name());
-        entityPage.forEach(entity -> {
-            dtoList.add(toSimpleDTO(entity));
-        });
+        entityPage.forEach(entity -> dtoList.add(toSimpleDTO(entity)));
 
         return dtoList;
     }
@@ -225,9 +212,7 @@ public class ArticleService {
         List<ArticleDTO> dtoList = new ArrayList<>();
 
         List<ArticleSimpleMapper> entityPage = articleRepository.getByCategoryIdLast4(cId, ArticleStatus.PUBLISHED.name());
-        entityPage.forEach(entity -> {
-            dtoList.add(toSimpleDTO(entity));
-        });
+        entityPage.forEach(entity -> dtoList.add(toSimpleDTO(entity)));
 
         return dtoList;
     }

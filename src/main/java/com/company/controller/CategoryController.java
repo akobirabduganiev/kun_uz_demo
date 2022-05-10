@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/category")
@@ -19,7 +20,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody CategoryDTO dto, HttpServletRequest request) {
+    public ResponseEntity<?> create(@RequestBody @Valid CategoryDTO dto, HttpServletRequest request) {
         return ResponseEntity.ok(categoryService.create(dto, JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN)));
     }
 
@@ -40,7 +41,7 @@ public class CategoryController {
     }
 
     @PutMapping("/adm/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody CategoryDTO dto) {
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody @Valid CategoryDTO dto) {
         return ResponseEntity.ok(categoryService.update(id, dto));
     }
 

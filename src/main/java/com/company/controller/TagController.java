@@ -1,10 +1,8 @@
 package com.company.controller;
 
-import com.company.dto.ArticleTypeDTO;
 import com.company.dto.TagDTO;
 import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
-import com.company.service.ArticleTypeService;
 import com.company.service.TagService;
 import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/tag")
@@ -21,7 +20,7 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody TagDTO dto, HttpServletRequest request) {
+    public ResponseEntity<?> create(@RequestBody @Valid TagDTO dto, HttpServletRequest request) {
         try {
             return ResponseEntity.ok(tagService.create(dto, JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN)));
         } catch (DataIntegrityViolationException e) {
@@ -39,7 +38,7 @@ public class TagController {
 
     @PutMapping("/adm/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                    @RequestBody TagDTO dto,
+                                    @RequestBody @Valid TagDTO dto,
                                     HttpServletRequest request) {
         return ResponseEntity.ok(tagService.update(id, dto, JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN)));
     }

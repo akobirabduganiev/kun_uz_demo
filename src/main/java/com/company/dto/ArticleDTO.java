@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,8 +17,12 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ArticleDTO {
     private Integer id;
+    @NotNull(message = "Title Required!")
+    @Size(min = 3)
     private String title;
+    @NotNull(message = "Description Required!")
     private String description;
+    @NotNull(message = "Content Required!")
     private String content;
     private Boolean visible;
 

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/region")
@@ -19,7 +20,7 @@ public class RegionController {
     private RegionService regionService;
 
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody RegionDTO dto,
+    public ResponseEntity<?> create(@RequestBody @Valid RegionDTO dto,
                                     HttpServletRequest request) {
         Integer pid = JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN);
         return ResponseEntity.ok(regionService.create(dto, pid));
@@ -37,7 +38,7 @@ public class RegionController {
     }
 
     @PutMapping("/adm/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody RegionDTO dto,
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody @Valid RegionDTO dto,
                                     HttpServletRequest request) {
         Integer pid = JwtUtil.getIdFromHeader(request, ProfileRole.ADMIN);
         return ResponseEntity.ok(regionService.update(id, dto));
